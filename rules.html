@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vexus - Правила</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #00BFEA;
+    --blue-dim: #0090b5;
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #141414;
+    --border: #1e1e1e;
+    --text: #d8d8d8;
+    --text-dim: #7a7a7a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,191,234,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,191,234,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* glow top */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(0,191,234,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 64px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .logo-svg {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 16px rgba(0,191,234,0.5));
+  }
+
+  .header-text h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: 2px;
+  }
+
+  .header-text p {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .divider-h {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--blue) 0%, transparent 70%);
+    margin-bottom: 64px;
+    animation: fadeIn 1s ease both 0.3s;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease both 0.2s;
+  }
+
+  .tab-btn {
+    flex: 1;
+    background: var(--bg2);
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    border-right: 1px solid var(--border);
+  }
+
+  .tab-btn:last-child { border-right: none; }
+
+  .tab-btn.active {
+    background: var(--bg3);
+    color: var(--blue);
+  }
+
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--blue);
+  }
+
+  .tab-btn:hover:not(.active) {
+    background: var(--bg3);
+    color: var(--text);
+  }
+
+  /* TAB PANELS */
+  .panel { display: none; animation: fadeUp 0.4s ease both; }
+  .panel.active { display: block; }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg2);
+    transition: border-color 0.2s;
+  }
+
+  .section:hover { border-color: rgba(0,191,234,0.25); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+
+  .section-num {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--blue);
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .section-body {
+    padding: 8px 0;
+  }
+
+  /* RULE ITEM */
+  .rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background 0.15s;
+  }
+
+  .rule:last-child { border-bottom: none; }
+  .rule:hover { background: rgba(0,191,234,0.04); }
+
+  .rule.sub {
+    padding-left: 52px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .rule-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    color: var(--blue);
+    opacity: 0.8;
+    min-width: 42px;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .rule.sub .rule-num {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .rule-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .rule.sub .rule-text {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  /* highlight forbidden */
+  .rule-text strong {
+    color: #ff5555;
+    font-weight: 700;
+  }
+
+  .rule-text em {
+    color: var(--blue);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* footer */
+  footer {
+    text-align: center;
+    margin-top: 80px;
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: fadeIn 1s ease both 0.8s;
+  }
+
+  footer span { color: var(--blue); }
+
+  /* KEYFRAMES */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--blue-dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- outer ring -->
+      <circle cx="50" cy="50" r="44" stroke="#00BFEA" stroke-width="9"/>
+      <!-- inner hub ring -->
+      <circle cx="50" cy="50" r="11" stroke="#00BFEA" stroke-width="9"/>
+      <!-- 6 spokes -->
+      <line x1="50" y1="8" x2="50" y2="39" stroke="#00BFEA" stroke-width="9" stroke-linecap="round"/>
+      <line x1="50" y1="61" x2="50" y2="92" stroke="#00BFEA" stroke-width="9" stroke-linecap="round"/>
+      <line x1="16" y1="26" x2="41" y2="41" stroke="#00BFEA" stroke-width="9" stroke-linecap="round"/>
+      <line x1="59" y1="59" x2="84" y2="74" stroke="#00BFEA" stroke-width="9" stroke-linecap="round"/>
+      <line x1="84" y1="26" x2="59" y2="41" stroke="#00BFEA" stroke-width="9" stroke-linecap="round"/>
+      <line x1="41" y1="59" x2="16" y2="74" stroke="#00BFEA" stroke-width="9" stroke-linecap="round"/>
+    </svg>
+    <div class="header-text">
+      <h1>Vexus</h1>
+      <p>Официальные правила проекта</p>
+    </div>
+  </header>
+
+  <div class="divider-h"></div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('discord', this)">💬 Discord-сервер</button>
+    <button class="tab-btn" onclick="switchTab('game', this)">🎮 Игровой сервер</button>
+  </div>
+
+  <!-- ===================== DISCORD PANEL ===================== -->
+  <div class="panel active" id="panel-discord">
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">⚙️</span>
+        <span class="section-title">1. Общие положения</span>
+        <span class="section-num">§ 1</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">1.1</span><span class="rule-text">Присоединяясь к серверу, вы автоматически подтверждаете, что ознакомились и согласны соблюдать правила нашего сервера.</span></div>
+        <div class="rule"><span class="rule-num">1.2</span><span class="rule-text">Незнание правил <strong>не освобождает</strong> от ответственности.</span></div>
+        <div class="rule"><span class="rule-num">1.3</span><span class="rule-text">Правила могут дополняться или уточняться без уведомления участников.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">💬</span>
+        <span class="section-title">2. Общение и поведение</span>
+        <span class="section-num">§ 2</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">2.1</span><span class="rule-text">Соблюдайте вежливость и уважение ко всем участникам.</span></div>
+        <div class="rule"><span class="rule-num">2.2</span><span class="rule-text"><strong>Запрещены</strong> оскорбления, травля, унижения, угрозы, провокации, токсичность.</span></div>
+        <div class="rule sub"><span class="rule-num">2.2.1</span><span class="rule-text">Запрещены только многочисленные оскорбления; оскорбления родственников <strong>полностью запрещены</strong>.</span></div>
+        <div class="rule"><span class="rule-num">2.4</span><span class="rule-text"><strong>Запрещена</strong> дискриминация по национальности и религии.</span></div>
+        <div class="rule"><span class="rule-num">2.5</span><span class="rule-text">Любые конфликты решаются через модерацию, а не «на публике».</span></div>
+        <div class="rule"><span class="rule-num">2.6</span><span class="rule-text">Ругательства допустимы, однако без адресации к личности участников.</span></div>
+        <div class="rule"><span class="rule-num">2.7</span><span class="rule-text">Спам, флуд, капс, бессмысленные сообщения и оффтоп - только в канале <em>#флуд</em>.</span></div>
+        <div class="rule"><span class="rule-num">2.8</span><span class="rule-text"><strong>Запрещена</strong> критика персонала проекта.</span></div>
+        <div class="rule"><span class="rule-num">2.9</span><span class="rule-text">Жалобу на члена персонала можно подать в канале <em>#жалобы</em>.</span></div>
+        <div class="rule"><span class="rule-num">2.10</span><span class="rule-text"><strong>Запрещены</strong> упоминания (пинги) участников и персонала без уважительной причины.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🚫</span>
+        <span class="section-title">3. Контент и материалы</span>
+        <span class="section-num">§ 3</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">3.1</span><span class="rule-text"><strong>Запрещены</strong> NSFW, порнография, шок-контент, расчлененка, насилие.</span></div>
+        <div class="rule sub"><span class="rule-num">3.1.1</span><span class="rule-text">Исключение: нереалистичная расчлененка, насилие и кровь из видеоигр. NSFW и порнографию это не затрагивает - публикация <strong>строго запрещена</strong>.</span></div>
+        <div class="rule"><span class="rule-num">3.2</span><span class="rule-text"><strong>Запрещено</strong> распространение вредоносных файлов и ссылок на вирусы.</span></div>
+        <div class="rule"><span class="rule-num">3.3</span><span class="rule-text"><strong>Запрещены</strong> политические и религиозные споры.</span></div>
+        <div class="rule"><span class="rule-num">3.4</span><span class="rule-text"><strong>Запрещён</strong> любой контент, нарушающий правила Discord ToS.</span></div>
+        <div class="rule"><span class="rule-num">3.5</span><span class="rule-text">Мемы публиковать только в канал <em>#мемы</em>.</span></div>
+        <div class="rule"><span class="rule-num">3.6</span><span class="rule-text">Скриншоты и видео - только в канал <em>#скриншоты-и-видео</em>.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">📢</span>
+        <span class="section-title">4. Никнеймы, аватары и статусы</span>
+        <span class="section-num">§ 4</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">4.1</span><span class="rule-text">Ник должен быть читабельным, без оскорблений и провокаций.</span></div>
+        <div class="rule"><span class="rule-num">4.2</span><span class="rule-text"><strong>Запрещены</strong> имена, имитирующие персонал проекта (например: «Админ», «Модератор», «Bot»).</span></div>
+        <div class="rule"><span class="rule-num">4.3</span><span class="rule-text"><strong>Запрещены</strong> аватары с NSFW, насилием, оскорблениями или политической символикой.</span></div>
+        <div class="rule"><span class="rule-num">4.4</span><span class="rule-text">Статусы также подпадают под эти правила.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🧩</span>
+        <span class="section-title">5. Реклама и приглашения</span>
+        <span class="section-num">§ 5</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">5.1</span><span class="rule-text">Любая реклама - только с разрешения главы проекта.</span></div>
+        <div class="rule"><span class="rule-num">5.2</span><span class="rule-text"><strong>Запрещена</strong> самовольная рассылка инвайтов, пиар в личку и спам-ссылки.</span></div>
+        <div class="rule"><span class="rule-num">5.3</span><span class="rule-text">Нарушение данных правил повлечет <strong>перманентный бан без предупреждения</strong>.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🔊</span>
+        <span class="section-title">6. Голосовые каналы</span>
+        <span class="section-num">§ 6</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">6.1</span><span class="rule-text">Используйте нормальный микрофон без шума, эха, фона или музыки на максимум.</span></div>
+        <div class="rule"><span class="rule-num">6.2</span><span class="rule-text">Музыка и soundpad допускаются только по согласию всех участников.</span></div>
+        <div class="rule"><span class="rule-num">6.3</span><span class="rule-text"><strong>Запрещены</strong> трансляции с NSFW, расчлененкой, порнографией, насилием и шок-контентом.</span></div>
+        <div class="rule"><span class="rule-num">6.4</span><span class="rule-text">На голосовые каналы также распространяются другие пункты правил.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">⚖️</span>
+        <span class="section-title">7. Ответственность</span>
+        <span class="section-num">§ 7</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">7.1</span><span class="rule-text">Любое нарушение может привести к предупреждению, муту, кику или бану - в зависимости от тяжести.</span></div>
+        <div class="rule"><span class="rule-num">7.2</span><span class="rule-text">Повторные нарушения усиливают наказание.</span></div>
+        <div class="rule"><span class="rule-num">7.3</span><span class="rule-text">Попытки обхода наказания (мультиаккаунты, VPN и т.д.) - <strong>бан всех связанных аккаунтов</strong>.</span></div>
+        <div class="rule"><span class="rule-num">7.4</span><span class="rule-text">Решение модерации всегда окончательное. Если считаете наказание несправедливым - подайте апелляционный тикет.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🛡️</span>
+        <span class="section-title">8. Модерация</span>
+        <span class="section-num">§ 8</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">8.1</span><span class="rule-text">Модерация обязана объяснять каждое своё действие только в тикетах.</span></div>
+        <div class="rule"><span class="rule-num">8.2</span><span class="rule-text">Жалобы на модераторов принимаются только при наличии доказательств (скриншотов, видео и т.д.).</span></div>
+        <div class="rule"><span class="rule-num">8.3</span><span class="rule-text">Модерация имеет право удалять контент без предупреждения.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🗂️</span>
+        <span class="section-title">9. Прочее</span>
+        <span class="section-num">§ 9</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">9.1</span><span class="rule-text">Меру наказания определяет модератор.</span></div>
+        <div class="rule"><span class="rule-num">9.2</span><span class="rule-text">При повторном нарушении применяется <em>×2 наказание</em> от предыдущего.</span></div>
+        <div class="rule"><span class="rule-num">9.3</span><span class="rule-text">Вы имеете право подать апелляционный тикет, если считаете наказание несправедливым.</span></div>
+        <div class="rule"><span class="rule-num">9.4</span><span class="rule-text">При многочисленных нарушениях вы получаете <strong>перманентный бан</strong>.</span></div>
+        <div class="rule"><span class="rule-num">9.5</span><span class="rule-text">Если вы мешаете развитию проекта, рейдите, ддосите и т.д. - <strong>перманентный бан</strong>.</span></div>
+      </div>
+    </div>
+
+  </div><!-- /discord panel -->
+
+  <!-- ===================== GAME PANEL ===================== -->
+  <div class="panel" id="panel-game">
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">⚙️</span>
+        <span class="section-title">1. Игровой процесс</span>
+        <span class="section-num">§ 1</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">1.1</span><span class="rule-text"><strong>Запрещено</strong> использование стороннего софта (читов, скриптов и т.д.).</span></div>
+        <div class="rule sub"><span class="rule-num">1.1.1</span><span class="rule-text"><em>Автокликер разрешён.</em></span></div>
+        <div class="rule"><span class="rule-num">1.2</span><span class="rule-text"><strong>Тимминг запрещён.</strong></span></div>
+        <div class="rule sub"><span class="rule-num">1.2.1</span><span class="rule-text">Тиммингом расценивается: намеренное затягивание раунда; кооперация SCP и людских классов против других людских; два враждебных людских класса объединяются против других.</span></div>
+        <div class="rule sub"><span class="rule-num">1.2.2</span><span class="rule-text"><em>Не расценивается тиммингом:</em> SCP ходит и никого не убивает (может убивать только тех, кто наносит ему урон).</span></div>
+        <div class="rule"><span class="rule-num">1.3</span><span class="rule-text"><strong>Запрещён</strong> вред команде и саботаж: намеренное закрытие союзников в комнатах без выхода; кража вещей в SCP-914; кража предметов при обмене; порча вещей союзных ролей в SCP-914; намеренное закрытие дверей перед союзниками; убийство связанных игроков без причины.</span></div>
+        <div class="rule"><span class="rule-num">1.4</span><span class="rule-text"><strong>Запрещено</strong> намеренно использовать баги и другие недочёты игры.</span></div>
+        <div class="rule"><span class="rule-num">1.5</span><span class="rule-text"><strong>Строго запрещено</strong> причинение вреда серверу (DoS, DDoS и т.д.).</span></div>
+        <div class="rule"><span class="rule-num">1.6</span><span class="rule-text"><strong>Запрещено</strong> кемперство дольше 2-х минут.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">💬</span>
+        <span class="section-title">2. Общение в чате</span>
+        <span class="section-num">§ 2</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">2.1</span><span class="rule-text"><strong>Запрещены</strong> чрезмерные оскорбления, направленные на личность игрока.</span></div>
+        <div class="rule"><span class="rule-num">2.2</span><span class="rule-text"><strong>Запрещены</strong> провокации, троллинг и подстрекательство к конфликтам.</span></div>
+        <div class="rule"><span class="rule-num">2.3</span><span class="rule-text"><strong>Запрещено</strong> обсуждение политики.</span></div>
+        <div class="rule"><span class="rule-num">2.4</span><span class="rule-text"><strong>Запрещена</strong> дискриминация по национальности и религии.</span></div>
+        <div class="rule"><span class="rule-num">2.5</span><span class="rule-text"><strong>Запрещено</strong> использовать оскорбительные и провокационные никнеймы.</span></div>
+        <div class="rule"><span class="rule-num">2.6</span><span class="rule-text"><strong>Запрещено</strong> использовать ники, похожие на имена персонала проекта.</span></div>
+        <div class="rule"><span class="rule-num">2.7</span><span class="rule-text"><strong>Запрещено</strong> притворяться другим человеком через ник, голос, Steam-профиль и т.п.</span></div>
+        <div class="rule"><span class="rule-num">2.8</span><span class="rule-text"><strong>Запрещена</strong> реклама без согласования с главой проекта.</span></div>
+        <div class="rule"><span class="rule-num">2.9</span><span class="rule-text"><strong>Запрещено</strong> использовать громкий, резкий или неприятный soundpad.</span></div>
+        <div class="rule"><span class="rule-num">2.10</span><span class="rule-text"><strong>Запрещено</strong> использование программ для искажения голоса.</span></div>
+        <div class="rule"><span class="rule-num">2.11</span><span class="rule-text"><strong>Запрещён</strong> спам в чат.</span></div>
+        <div class="rule"><span class="rule-num">2.12</span><span class="rule-text"><strong>Запрещено</strong> издавать неприятные звуки в голосовом чате.</span></div>
+        <div class="rule"><span class="rule-num">2.13</span><span class="rule-text"><strong>Запрещено</strong> распространять ложную информацию о сервере.</span></div>
+        <div class="rule"><span class="rule-num">2.14</span><span class="rule-text"><strong>Запрещено</strong> перебивать и игнорировать персонал проекта.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">⚖️</span>
+        <span class="section-title">3. Ответственность</span>
+        <span class="section-num">§ 3</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">3.1</span><span class="rule-text">Незнание правил <strong>не освобождает</strong> от ответственности.</span></div>
+        <div class="rule"><span class="rule-num">3.2</span><span class="rule-text">Повторные нарушения приводят к <em>×2 наказанию</em>.</span></div>
+        <div class="rule sub"><span class="rule-num">3.2.1</span><span class="rule-text">Правило применяется только к пунктам, которые вы уже нарушали в течение месяца.</span></div>
+        <div class="rule"><span class="rule-num">3.3</span><span class="rule-text"><strong>Запрещён</strong> обход наказаний через VPN, мультиаккаунты и другие способы.</span></div>
+        <div class="rule"><span class="rule-num">3.4</span><span class="rule-text">Вы можете подать апелляционный тикет, если считаете наказание несправедливым.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🌟</span>
+        <span class="section-title">4. Взаимодействие с персоналом</span>
+        <span class="section-num">§ 4</span>
+      </div>
+      <div class="section-body">
+        <div class="rule"><span class="rule-num">4.1</span><span class="rule-text">Уважайте персонал проекта.</span></div>
+        <div class="rule"><span class="rule-num">4.2</span><span class="rule-text"><strong>Запрещены</strong> оскорбления, троллинг и провокации персонала.</span></div>
+        <div class="rule"><span class="rule-num">4.3</span><span class="rule-text">При наличии жалобы на персонал - используйте канал <em>#жалобы</em> на сервере проекта.</span></div>
+      </div>
+    </div>
+
+  </div><!-- /game panel -->
+
+  <footer>
+    <span>Vexus Rules</span> - By Vusarius
+  </footer>
+
+</div>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = document.getElementById('panel-' + id);
+    panel.classList.add('active');
+  }
+</script>
+</body>
+</html>
